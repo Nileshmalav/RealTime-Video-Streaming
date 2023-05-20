@@ -8,20 +8,24 @@ cap = cv2.VideoCapture(0)
 # Set up subprocess for FFmpeg
 ffmpeg_cmd = [
     "ffmpeg",
+    "-thread_queue_size", "1024",
     "-f", "rawvideo",
     "-pixel_format", "bgr24",
     "-video_size", "640x480",
     "-framerate", "30",
     "-i", "-",
     "-f", "dshow",
+    "-rtbufsize", "100M",
+    "-thread_queue_size", "1024",
     "-i", "audio=Microphone Array (Realtek(R) Audio)",
     "-c:v", "libx264",
     "-preset", "ultrafast",
     "-pix_fmt", "yuv420p",
     "-c:a", "aac",
     "-ar", "44100",
-    "-f", "flv", "rtmp://192.168.58.54/live/stream1"
+    "-f", "flv", "rtmp://192.168.58.54/live/stream2"
 ]
+
 ffmpeg = sp.Popen(ffmpeg_cmd, stdin=sp.PIPE)
 
 while True:
